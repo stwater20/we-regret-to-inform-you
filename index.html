@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dear Author, We Regret to Inform You…</title>
+<meta name="description" content="一個給每一位被拒稿研究者的悲傷小站。A sad little site for every rejected paper.">
+<style>
+  :root{
+    --bg:#0b0f1a;
+    --bg2:#111726;
+    --ink:#c9d2e3;
+    --muted:#6b7691;
+    --accent:#8aa0c8;
+    --sad:#5c6b8f;
+    --paper:#161d2e;
+    --line:#232c42;
+    --red:#a35b6b;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(1200px 600px at 50% -10%, #16203a 0%, transparent 60%),
+      linear-gradient(180deg, var(--bg) 0%, #070a12 100%);
+    color:var(--ink);
+    font-family:"Georgia","Songti TC","Noto Serif TC",serif;
+    min-height:100vh;
+    overflow-x:hidden;
+    line-height:1.7;
+  }
+  /* rain */
+  #rain{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.5;}
+  .content{position:relative;z-index:2;max-width:760px;margin:0 auto;padding:64px 22px 100px;}
+  header{text-align:center;margin-bottom:54px;}
+  .kicker{letter-spacing:.35em;text-transform:uppercase;font-size:12px;color:var(--muted);font-family:-apple-system,"PingFang TC",sans-serif;}
+  h1{font-size:clamp(28px,6vw,46px);font-weight:400;margin:.4em 0 .2em;color:#e6ecf7;text-shadow:0 2px 30px rgba(120,150,220,.25);}
+  h1 .sub{display:block;font-size:15px;color:var(--muted);letter-spacing:.05em;margin-top:14px;font-style:italic;}
+  .envelope{font-size:40px;filter:grayscale(.3) brightness(.9);}
+
+  /* generator card */
+  .card{
+    background:linear-gradient(180deg,var(--paper),#12182a);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:34px 30px;
+    box-shadow:0 30px 80px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.03);
+    position:relative;
+    overflow:hidden;
+  }
+  .card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;
+    background:linear-gradient(90deg,transparent,var(--red),transparent);opacity:.6;}
+  .stamp{position:absolute;top:18px;right:-38px;transform:rotate(18deg);
+    border:3px solid var(--red);color:var(--red);padding:4px 46px;font-family:-apple-system,"PingFang TC",sans-serif;
+    font-weight:800;letter-spacing:.15em;font-size:13px;opacity:.7;border-radius:4px;}
+  .letterhead{font-size:12px;letter-spacing:.2em;color:var(--muted);text-transform:uppercase;
+    font-family:-apple-system,sans-serif;margin-bottom:20px;border-bottom:1px dashed var(--line);padding-bottom:14px;}
+  #quote{font-size:clamp(19px,3.4vw,25px);min-height:132px;color:#dbe3f2;transition:opacity .4s;}
+  #quote .zh{display:block;margin-top:18px;font-size:15px;color:var(--sad);font-style:italic;
+    font-family:"Songti TC","Noto Serif TC",serif;}
+  .sign{margin-top:24px;font-size:14px;color:var(--muted);font-style:italic;text-align:right;}
+
+  .btn-row{display:flex;gap:12px;justify-content:center;margin-top:30px;flex-wrap:wrap;}
+  button{
+    font-family:-apple-system,"PingFang TC",sans-serif;
+    background:#1b2438;color:var(--ink);border:1px solid var(--line);
+    padding:13px 26px;border-radius:10px;font-size:15px;cursor:pointer;transition:.2s;
+  }
+  button:hover{background:#232f49;border-color:var(--accent);transform:translateY(-1px);}
+  button.primary{background:linear-gradient(180deg,#3a2a38,#2a1f2c);border-color:#5a3a48;color:#f0dbe2;}
+  button.primary:hover{background:linear-gradient(180deg,#4a3444,#352636);}
+  .counter{text-align:center;color:var(--muted);font-size:13px;margin-top:20px;font-family:-apple-system,sans-serif;font-style:italic;}
+
+  /* reasons */
+  .section-title{text-align:center;margin:80px 0 8px;font-size:26px;font-weight:400;color:#e6ecf7;}
+  .section-sub{text-align:center;color:var(--muted);font-size:14px;margin-bottom:40px;font-family:-apple-system,sans-serif;}
+  .reason{
+    background:var(--bg2);border:1px solid var(--line);border-left:3px solid var(--sad);
+    border-radius:10px;padding:20px 22px;margin-bottom:16px;transition:.25s;
+  }
+  .reason:hover{border-left-color:var(--red);transform:translateX(4px);background:#141b2c;}
+  .reason .rank{font-family:-apple-system,sans-serif;font-size:12px;color:var(--muted);letter-spacing:.1em;}
+  .reason .en{font-size:17px;color:#dbe3f2;margin:6px 0 8px;}
+  .reason .zh{font-size:14px;color:var(--sad);font-style:italic;}
+
+  footer{text-align:center;margin-top:70px;color:var(--muted);font-size:13px;
+    font-family:-apple-system,sans-serif;line-height:1.9;}
+  footer a{color:var(--accent);text-decoration:none;border-bottom:1px dotted var(--accent);}
+  .hr{height:1px;background:linear-gradient(90deg,transparent,var(--line),transparent);margin:60px 0;}
+</style>
+</head>
+<body>
+<canvas id="rain"></canvas>
+<div class="content">
+
+  <header>
+    <div class="envelope">✉️</div>
+    <div class="kicker">Editorial Decision</div>
+    <h1>We Regret to Inform You…
+      <span class="sub">獻給每一封以「Dear Author」開頭、卻沒有好消息的信</span>
+    </h1>
+  </header>
+
+  <div class="card">
+    <div class="stamp">REJECTED</div>
+    <div class="letterhead">Journal of Things That Almost Worked · Manuscript #<span id="msid">0000</span></div>
+    <div id="quote"></div>
+    <div class="sign" id="sign">— Reviewer 2</div>
+  </div>
+
+  <div class="btn-row">
+    <button class="primary" onclick="reject()">再拒絕我一次 · Reject me again</button>
+    <button onclick="copyQuote()">複製這句心碎 · Copy</button>
+  </div>
+  <div class="counter" id="counter">你已經被拒絕 0 次。你還在這裡。這很勇敢。</div>
+
+  <div class="hr"></div>
+
+  <h2 class="section-title">為什麼論文會被拒?</h2>
+  <p class="section-sub">The most common reasons papers get rejected — 附上一點誠實的旁白</p>
+  <div id="reasons"></div>
+
+  <footer>
+    做給每一個在 rebuttal 期限前一天還沒睡的人。<br>
+    Made with tears for everyone refreshing their submission portal at 3 AM.<br>
+    <span style="opacity:.6">被拒絕不代表你的研究沒有價值,只代表這一次、這個審稿人、這本期刊。下一站見。</span>
+  </footer>
+</div>
+
+<script>
+/* ---- real reviewer-style rejection lines (EN) + ZH 旁白 ---- */
+const quotes = [
+  ["The contribution is incremental at best; I fail to see the novelty here.","翻譯:你做的東西別人早就做過了,而且做得比較好。",],
+  ["The methodology is fundamentally flawed and cannot be salvaged through revision.","連 major revision 都不給,直接判死刑。",],
+  ["I am afraid this manuscript may contribute not so much toward the field's advancement as toward its eventual demise.","審稿人今天心情特別詩意。",],
+  ["This topic is over-researched. Also, please add 20 more references.","他要你少寫一點,同時多引用他 20 篇。",],
+  ["The English is poor. Also, I don't like the font.","字型錯了不是拒稿理由,但他就是拒了。",],
+  ["Reject — more holes than my grandad's string vest.","這句會被裱框掛在你的心上一輩子。",],
+  ["Well written, but the impact is unclear. Recommend rejection.","誇你的每一句都是為了讓最後那刀更痛。",],
+  ["The research question is not sufficiently motivated. Why should anyone care?","「Why should anyone care」——凌晨三點最不該讀到的一句話。",],
+  ["Results are not robust; the statistics do not support the claims.","p 值不夠漂亮,故事就講不下去。",],
+  ["This paper is out of scope for our journal. We wish you luck elsewhere.","投錯地方,連內容都沒人看完。",],
+  ["The manuscript is excellent. I suggest rejection.","前後矛盾,但拒絕的部分他很堅定。",],
+  ["Interesting idea, poorly executed. Perhaps a workshop would be more appropriate.","「也許 workshop 比較適合你」= 溫柔版的滾。",],
+  ["I stopped reading after the introduction. The framing did not convince me.","他連 method 都沒翻到。",],
+  ["The findings are either wrong or trivial. In either case, not publishable.","二選一,兩個都不是好選項。",],
+  ["Please cite the following 15 papers, all conveniently by the same author.","Reviewer 2 的真面目。",],
+  ["This reads like a first draft. Come back when it's finished.","它就是你熬了四個月的最終版。",],
+  ["The literature review is thin and the gap is not real.","你以為的 gap,在他眼裡只是你沒讀夠。",],
+  ["Nice story, but where is the science?","故事講得太好,反而被懷疑。",],
+];
+
+const signs = ["— Reviewer 2","— Reviewer 2 (again)","— The Editor","— Associate Editor","— Reviewer 3 (who agreed with Reviewer 2)","— Handling Editor","— Anonymous, thankfully"];
+
+const reasons = [
+  ["Flawed methodology","Methodological problems are the #1 reason for rejection — bad design, wrong stats, unreliable data.","方法有洞,審稿人第一個就抓這裡。這是最常見的死因。"],
+  ["No novelty / low impact","Solid work that only confirms what's already known, or is too narrow to matter.","做得很扎實,但世界不需要再知道一次。"],
+  ["Weak motivation","The paper never answers \"so what?\" — no clear reason the question matters.","你知道為什麼要做,但沒讓審稿人知道。"],
+  ["Unreliable results","Findings aren't robust, or the interpretation over-reaches what the data show.","數據撐不起你的結論,句號變成問號。"],
+  ["Poor clarity / structure","Long, repetitive, focuses on what was done instead of what was found.","寫太多、講太雜,讀的人比你還累。"],
+  ["Out of scope","Perfectly fine paper, wrong journal. Desk-rejected before review.","投錯門,連被讀完的機會都沒有。"],
+  ["Ignoring reviewer comments","Even after revision, papers die by not addressing the feedback.","改了,但沒改到他要的那一點。"],
+];
+
+let count = 0, current = 0;
+
+function pick(prev, n){ let i; do{ i=Math.floor(Math.random()*n);}while(i===prev && n>1); return i; }
+
+function reject(){
+  const box=document.getElementById('quote');
+  box.style.opacity=0;
+  setTimeout(()=>{
+    current=pick(current,quotes.length);
+    const q=quotes[current];
+    box.innerHTML=`“${q[0]}”<span class="zh">${q[1]}</span>`;
+    document.getElementById('sign').textContent=signs[Math.floor(Math.random()*signs.length)];
+    document.getElementById('msid').textContent=String(Math.floor(1000+Math.random()*9000));
+    box.style.opacity=1;
+    count++;
+    document.getElementById('counter').textContent=
+      `你已經被拒絕 ${count} 次。你還在這裡。這很勇敢。`;
+  },300);
+}
+
+function copyQuote(){
+  const q=quotes[current];
+  navigator.clipboard.writeText(`“${q[0]}”\n${q[1]}`).then(()=>{
+    const c=document.getElementById('counter');
+    const t=c.textContent; c.textContent="已複製這句心碎到剪貼簿 🖤"; setTimeout(()=>c.textContent=t,1500);
+  }).catch(()=>{});
+}
+
+/* render reasons */
+document.getElementById('reasons').innerHTML=reasons.map((r,i)=>
+  `<div class="reason"><div class="rank">REASON #${i+1}</div>
+   <div class="en">${r[0]} — ${r[1]}</div>
+   <div class="zh">${r[2]}</div></div>`).join('');
+
+reject();
+
+/* ---- rain ---- */
+const c=document.getElementById('rain'), x=c.getContext('2d');
+let W,H,drops;
+function resize(){W=c.width=innerWidth;H=c.height=innerHeight;
+  drops=Array.from({length:Math.min(160,Math.floor(W/8))},()=>({
+    x:Math.random()*W,y:Math.random()*H,l:8+Math.random()*14,s:3+Math.random()*5,o:.1+Math.random()*.35}));}
+resize(); addEventListener('resize',resize);
+function draw(){
+  x.clearRect(0,0,W,H);
+  x.lineCap='round';
+  drops.forEach(d=>{
+    x.strokeStyle=`rgba(140,160,200,${d.o})`;x.lineWidth=1;
+    x.beginPath();x.moveTo(d.x,d.y);x.lineTo(d.x-1,d.y+d.l);x.stroke();
+    d.y+=d.s; d.x-=0.4;
+    if(d.y>H){d.y=-20;d.x=Math.random()*W;}
+  });
+  requestAnimationFrame(draw);
+}
+draw();
+</script>
+</body>
+</html>
