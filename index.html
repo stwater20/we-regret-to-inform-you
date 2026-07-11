@@ -124,6 +124,7 @@
 
   <div class="btn-row">
     <button class="primary" onclick="reject()">再拒絕我一次 · Reject me again</button>
+    <button onclick="saveImage()">存成圖片 · Save as image</button>
     <button onclick="copyQuote()">複製這句心碎 · Copy</button>
   </div>
 
@@ -220,6 +221,120 @@ function copyLink(){
 function nativeShare(){
   const q=QUOTES[current];
   navigator.share({title:"We Regret to Inform You…",text:`“${q.en}” — ${q.zh}`,url:SITE}).catch(()=>{});
+}
+
+/* ---- save current letter as an image ---- */
+function roundRect(g,x,y,w,h,r){
+  g.beginPath();
+  g.moveTo(x+r,y);
+  g.arcTo(x+w,y,x+w,y+h,r);
+  g.arcTo(x+w,y+h,x,y+h,r);
+  g.arcTo(x,y+h,x,y,r);
+  g.arcTo(x,y,x+w,y,r);
+  g.closePath();
+}
+function wrapText(g,text,maxWidth){
+  const lines=[]; let line='';
+  for(const ch of text){
+    const test=line+ch;
+    if(g.measureText(test).width>maxWidth && line!==''){
+      if(ch===' '){ lines.push(line); line=''; continue; }
+      const sp=line.lastIndexOf(' ');
+      if(sp>0 && /[A-Za-z0-9.,;:!?'"()\-]/.test(ch)){
+        lines.push(line.slice(0,sp)); line=line.slice(sp+1)+ch;
+      } else { lines.push(line); line=ch; }
+    } else { line=test; }
+  }
+  if(line) lines.push(line);
+  return lines;
+}
+function renderLetterCanvas(){
+  const cs=getComputedStyle(document.documentElement);
+  const v=(n,f)=>{ const s=cs.getPropertyValue(n).trim(); return s||f; };
+  const q=QUOTES[current];
+  const sign=document.getElementById('sign').textContent;
+  const msid=document.getElementById('msid').textContent;
+  const W=1080,H=1160;
+  const cv=document.createElement('canvas'); cv.width=W; cv.height=H;
+  const g=cv.getContext('2d');
+
+  g.fillStyle=v('--bg','#0b0f1a'); g.fillRect(0,0,W,H);
+  const glow=g.createRadialGradient(W/2,-120,60,W/2,-120,760);
+  glow.addColorStop(0,'rgba('+v('--rain','140,160,200')+',0.10)');
+  glow.addColorStop(1,'rgba(0,0,0,0)');
+  g.fillStyle=glow; g.fillRect(0,0,W,H);
+
+  g.strokeStyle='rgba('+v('--rain','140,160,200')+',0.16)'; g.lineWidth=2; g.lineCap='round';
+  for(let i=0;i<80;i++){const x=Math.random()*W,y=Math.random()*H;g.beginPath();g.moveTo(x,y);g.lineTo(x-2,y+16);g.stroke();}
+
+  g.textAlign='center'; g.textBaseline='alphabetic';
+  g.fillStyle=v('--muted','#6b7691');
+  g.font='600 24px -apple-system,"PingFang TC",sans-serif';
+  g.fillText('W E   R E G R E T   T O   I N F O R M   Y O U …', W/2, 92);
+
+  const cx=70,cy=150,cw=940,chh=860,r=26;
+  roundRect(g,cx,cy,cw,chh,r);
+  const cg=g.createLinearGradient(0,cy,0,cy+chh);
+  cg.addColorStop(0,v('--card-grad1','#161d2e')); cg.addColorStop(1,v('--card-grad2','#12182a'));
+  g.fillStyle=cg; g.fill();
+  g.lineWidth=1.5; g.strokeStyle=v('--line','#232c42'); g.stroke();
+
+  g.save(); roundRect(g,cx,cy,cw,chh,r); g.clip();
+  g.globalAlpha=.5; g.fillStyle=v('--red','#a35b6b'); g.fillRect(cx,cy,cw,5); g.globalAlpha=1;
+  g.restore();
+
+  const padX=cx+56;
+  let ty=cy+92;
+  g.textAlign='left';
+  g.fillStyle=v('--muted','#6b7691');
+  g.font='600 21px -apple-system,"PingFang TC",sans-serif';
+  g.fillText('JOURNAL OF THINGS THAT ALMOST WORKED · #'+msid, padX, ty);
+  ty+=22;
+  g.strokeStyle=v('--line','#232c42'); g.setLineDash([6,6]); g.lineWidth=1;
+  g.beginPath(); g.moveTo(padX,ty); g.lineTo(cx+cw-56,ty); g.stroke(); g.setLineDash([]);
+  ty+=78;
+
+  g.fillStyle=v('--ink','#c9d2e3');
+  g.font='400 44px Georgia,"Songti TC","Noto Serif TC",serif';
+  wrapText(g,'“'+q.en+'”',cw-112).forEach(l=>{ g.fillText(l,padX,ty); ty+=58; });
+  ty+=30;
+
+  g.fillStyle=v('--sad','#5c6b8f');
+  g.font='italic 29px Georgia,"Songti TC","Noto Serif TC",serif';
+  wrapText(g,q.zh,cw-112).forEach(l=>{ g.fillText(l,padX,ty); ty+=42; });
+
+  g.textAlign='right'; g.fillStyle=v('--muted','#6b7691');
+  g.font='italic 26px Georgia,"Songti TC",serif';
+  g.fillText(sign, cx+cw-56, cy+chh-48);
+
+  g.save();
+  g.translate(cx+cw-150, cy+118); g.rotate(-18*Math.PI/180);
+  g.globalAlpha=.72; g.strokeStyle=v('--red','#a35b6b'); g.lineWidth=4;
+  roundRect(g,-122,-34,244,68,6); g.stroke();
+  g.fillStyle=v('--red','#a35b6b'); g.textAlign='center'; g.textBaseline='middle';
+  g.font='800 30px -apple-system,"PingFang TC",sans-serif';
+  g.fillText('R E J E C T E D',0,3);
+  g.restore(); g.globalAlpha=1; g.textBaseline='alphabetic';
+
+  g.textAlign='center'; g.fillStyle=v('--muted','#6b7691');
+  g.font='500 26px -apple-system,"PingFang TC","Segoe UI Emoji","Apple Color Emoji",sans-serif';
+  g.fillText('we-regret-to-inform-you.sectools.tw  🖤', W/2, cy+chh+70);
+
+  return cv;
+}
+function saveImage(){
+  try{
+    const cv=renderLetterCanvas();
+    cv.toBlob(function(b){
+      if(!b){ flash("圖片產生失敗,再試一次 🥲"); return; }
+      const a=document.createElement('a');
+      a.href=URL.createObjectURL(b);
+      a.download='rejection-letter.png';
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(()=>URL.revokeObjectURL(a.href),2000);
+      flash("已存成圖片,拿去發限動吧 🖤");
+    },'image/png');
+  }catch(e){ flash("圖片產生失敗,再試一次 🥲"); }
 }
 
 /* theme */
