@@ -20,6 +20,13 @@ A one-click **rejection generator** (real-reviewer-style lines with Chinese comm
 Settings → Pages → Branch: `main` / root → 網站就會上線在
 `https://<你的帳號>.github.io/<repo-name>/`
 
+## 一起貢獻 / Contributing
+
+歡迎大家加入自己收過的拒稿名言!**所有貢獻都走 Pull Request** —— fork → 編輯 `index.html` 裡的 `quotes` 陣列 → 發 PR。
+細節看 [CONTRIBUTING.md](CONTRIBUTING.md)。
+
+Everyone is welcome to add their own rejection lines. **All contributions go through a Pull Request** — fork, edit the `quotes` array in `index.html`, open a PR. See [CONTRIBUTING.md](CONTRIBUTING.md).
+
 ## 免責 / Disclaimer
 
 拒稿理由整理自公開文章;產生器裡的句子是致敬真實審稿評論的再創作,純屬療癒與自嘲用途。

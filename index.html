@@ -13,20 +13,22 @@
     --bg:#0b0f1a; --bg2:#111726; --ink:#c9d2e3; --muted:#6b7691;
     --accent:#8aa0c8; --sad:#5c6b8f; --paper:#161d2e; --line:#232c42;
     --red:#a35b6b; --card-grad1:#161d2e; --card-grad2:#12182a;
-    --btn:#1b2438; --btn-hover:#232f49; --rain:140,160,200;
+    --btn:#171e30; --btn-hover:#202a41; --rain:140,160,200;
+    --primary-grad1:#26222f; --primary-grad2:#1c1925; --primary-border:#463a50; --primary-ink:#cdc2d6;
   }
   [data-theme="light"]{
-    --bg:#e9ecf2; --bg2:#f3f5f9; --ink:#3a4256; --muted:#8791a6;
-    --accent:#5b6a8c; --sad:#7c88a3; --paper:#ffffff; --line:#dfe3ec;
+    --bg:#e6e9f0; --bg2:#f2f4f9; --ink:#3a4256; --muted:#8791a6;
+    --accent:#5b6a8c; --sad:#7c88a3; --paper:#ffffff; --line:#dde1ea;
     --red:#b06576; --card-grad1:#ffffff; --card-grad2:#f4f6fb;
-    --btn:#eef1f7; --btn-hover:#e2e7f1; --rain:120,140,180;
+    --btn:#eef1f7; --btn-hover:#e3e8f1; --rain:120,140,180;
+    --primary-grad1:#ece6f0; --primary-grad2:#e3dbe9; --primary-border:#c9b9d1; --primary-ink:#5b4c65;
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
   body{
     background:
-      radial-gradient(1200px 600px at 50% -10%, color-mix(in srgb, var(--accent) 18%, transparent) 0%, transparent 60%),
-      linear-gradient(180deg, var(--bg) 0%, color-mix(in srgb, var(--bg) 70%, #000) 100%);
+      radial-gradient(1200px 600px at 50% -10%, color-mix(in srgb, var(--accent) 16%, transparent) 0%, transparent 60%),
+      linear-gradient(180deg, var(--bg) 0%, color-mix(in srgb, var(--bg) 68%, #000) 100%);
     color:var(--ink);
     font-family:"Georgia","Songti TC","Noto Serif TC",serif;
     min-height:100vh; overflow-x:hidden; line-height:1.7;
@@ -35,11 +37,12 @@
   #rain{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.5;}
   .content{position:relative;z-index:2;max-width:760px;margin:0 auto;padding:64px 22px 100px;}
 
-  /* theme toggle */
   #theme{position:fixed;top:18px;right:18px;z-index:5;width:44px;height:44px;border-radius:50%;
-    border:1px solid var(--line);background:var(--paper);color:var(--ink);cursor:pointer;font-size:18px;
-    box-shadow:0 6px 20px rgba(0,0,0,.25);transition:.25s;}
-  #theme:hover{transform:rotate(20deg) scale(1.08);}
+    border:1px solid var(--line);background:var(--paper);color:var(--ink);cursor:pointer;
+    display:flex;align-items:center;justify-content:center;line-height:1;padding:0;
+    font-size:20px;font-family:-apple-system,"Segoe UI Emoji","Apple Color Emoji",sans-serif;
+    box-shadow:0 6px 20px rgba(0,0,0,.25);transition:background .25s,border-color .25s,transform .25s;}
+  #theme:hover{transform:scale(1.08);border-color:var(--accent);}
 
   header{text-align:center;margin-bottom:54px;}
   .kicker{letter-spacing:.35em;text-transform:uppercase;font-size:12px;color:var(--muted);font-family:-apple-system,"PingFang TC",sans-serif;}
@@ -52,10 +55,10 @@
     box-shadow:0 30px 80px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.03);
     position:relative;overflow:hidden;}
   .card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;
-    background:linear-gradient(90deg,transparent,var(--red),transparent);opacity:.6;}
+    background:linear-gradient(90deg,transparent,var(--red),transparent);opacity:.55;}
   .stamp{position:absolute;top:18px;right:-38px;transform:rotate(18deg);
     border:3px solid var(--red);color:var(--red);padding:4px 46px;font-family:-apple-system,"PingFang TC",sans-serif;
-    font-weight:800;letter-spacing:.15em;font-size:13px;opacity:.7;border-radius:4px;}
+    font-weight:800;letter-spacing:.15em;font-size:13px;opacity:.65;border-radius:4px;}
   .letterhead{font-size:12px;letter-spacing:.2em;color:var(--muted);text-transform:uppercase;
     font-family:-apple-system,sans-serif;margin-bottom:20px;border-bottom:1px dashed var(--line);padding-bottom:14px;}
   #quote{font-size:clamp(19px,3.4vw,25px);min-height:132px;color:var(--ink);transition:opacity .4s;}
@@ -65,13 +68,14 @@
 
   .btn-row{display:flex;gap:12px;justify-content:center;margin-top:30px;flex-wrap:wrap;}
   button{font-family:-apple-system,"PingFang TC",sans-serif;background:var(--btn);color:var(--ink);
-    border:1px solid var(--line);padding:13px 26px;border-radius:10px;font-size:15px;cursor:pointer;transition:.2s;}
+    border:1px solid var(--line);padding:13px 26px;border-radius:10px;font-size:15px;cursor:pointer;
+    transition:background .2s,border-color .2s,transform .2s;}
   button:hover{background:var(--btn-hover);border-color:var(--accent);transform:translateY(-1px);}
-  button.primary{background:linear-gradient(180deg,color-mix(in srgb,var(--red) 40%,var(--btn)),var(--btn));
-    border-color:var(--red);color:var(--ink);}
+  button.primary{background:linear-gradient(180deg,var(--primary-grad1),var(--primary-grad2));
+    border-color:var(--primary-border);color:var(--primary-ink);}
+  button.primary:hover{border-color:var(--sad);filter:brightness(1.08);}
   .counter{text-align:center;color:var(--muted);font-size:13px;margin-top:20px;font-family:-apple-system,sans-serif;font-style:italic;}
 
-  /* share */
   .share{display:flex;gap:10px;justify-content:center;align-items:center;margin-top:24px;flex-wrap:wrap;}
   .share .lbl{font-size:12px;color:var(--muted);font-family:-apple-system,sans-serif;letter-spacing:.15em;text-transform:uppercase;margin-right:4px;}
   .share a,.share button.s{display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;
@@ -94,6 +98,7 @@
   footer a{color:var(--accent);text-decoration:none;border-bottom:1px dotted var(--accent);}
   .tools{margin-top:22px;padding-top:18px;border-top:1px solid var(--line);}
   .tools a{font-weight:600;}
+  .contribute{margin-top:10px;}
   .hr{height:1px;background:linear-gradient(90deg,transparent,var(--line),transparent);margin:60px 0;}
 </style>
 </head>
@@ -152,52 +157,32 @@
     做給每一個在 rebuttal 期限前一天還沒睡的人。<br>
     Made with tears for everyone refreshing their submission portal at 3 AM.<br>
     <span style="opacity:.7">被拒絕不代表你的研究沒有價值,只代表這一次、這個審稿人、這本期刊。下一站見。</span>
+    <div class="contribute">
+      有你自己的拒稿名言?歡迎 <a href="https://github.com/stwater20/we-regret-to-inform-you/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener">發 PR 貢獻一句</a> ✍️
+    </div>
     <div class="tools">
       更多工具 / More tools → <a href="https://sectools.tw/tools" target="_blank" rel="noopener">sectools.tw/tools</a>
     </div>
   </footer>
 </div>
 
+<!-- 資料檔:想加名言請編輯 quotes.js;想加理由請編輯 reasons.js -->
+<script src="quotes.js"></script>
+<script src="reasons.js"></script>
 <script>
-const quotes = [
-  ["The contribution is incremental at best; I fail to see the novelty here.","翻譯:你做的東西別人早就做過了,而且做得比較好。"],
-  ["The methodology is fundamentally flawed and cannot be salvaged through revision.","連 major revision 都不給,直接判死刑。"],
-  ["I am afraid this manuscript may contribute not so much toward the field's advancement as toward its eventual demise.","審稿人今天心情特別詩意。"],
-  ["This topic is over-researched. Also, please add 20 more references.","他要你少寫一點,同時多引用他 20 篇。"],
-  ["The English is poor. Also, I don't like the font.","字型錯了不是拒稿理由,但他就是拒了。"],
-  ["Reject — more holes than my grandad's string vest.","這句會被裱框掛在你的心上一輩子。"],
-  ["Well written, but the impact is unclear. Recommend rejection.","誇你的每一句都是為了讓最後那刀更痛。"],
-  ["The research question is not sufficiently motivated. Why should anyone care?","「Why should anyone care」——凌晨三點最不該讀到的一句話。"],
-  ["Results are not robust; the statistics do not support the claims.","p 值不夠漂亮,故事就講不下去。"],
-  ["This paper is out of scope for our journal. We wish you luck elsewhere.","投錯地方,連內容都沒人看完。"],
-  ["The manuscript is excellent. I suggest rejection.","前後矛盾,但拒絕的部分他很堅定。"],
-  ["Interesting idea, poorly executed. Perhaps a workshop would be more appropriate.","「也許 workshop 比較適合你」= 溫柔版的滾。"],
-  ["I stopped reading after the introduction. The framing did not convince me.","他連 method 都沒翻到。"],
-  ["The findings are either wrong or trivial. In either case, not publishable.","二選一,兩個都不是好選項。"],
-  ["Please cite the following 15 papers, all conveniently by the same author.","Reviewer 2 的真面目。"],
-  ["This reads like a first draft. Come back when it's finished.","它就是你熬了四個月的最終版。"],
-  ["The literature review is thin and the gap is not real.","你以為的 gap,在他眼裡只是你沒讀夠。"],
-  ["Nice story, but where is the science?","故事講得太好,反而被懷疑。"]
-];
+const QUOTES = (window.QUOTES && window.QUOTES.length) ? window.QUOTES
+  : [{en:"We regret to inform you the data file failed to load.", zh:"連拒稿名言都載入失敗,這也太慘。"}];
+const REASONS = window.REASONS || [];
 const signs = ["— Reviewer 2","— Reviewer 2 (again)","— The Editor","— Associate Editor","— Reviewer 3 (who agreed with Reviewer 2)","— Handling Editor","— Anonymous, thankfully"];
-const reasons = [
-  ["Flawed methodology","Methodological problems are the #1 reason for rejection — bad design, wrong stats, unreliable data.","方法有洞,審稿人第一個就抓這裡。這是最常見的死因。"],
-  ["No novelty / low impact","Solid work that only confirms what's already known, or is too narrow to matter.","做得很扎實,但世界不需要再知道一次。"],
-  ["Weak motivation","The paper never answers \"so what?\" — no clear reason the question matters.","你知道為什麼要做,但沒讓審稿人知道。"],
-  ["Unreliable results","Findings aren't robust, or the interpretation over-reaches what the data show.","數據撐不起你的結論,句號變成問號。"],
-  ["Poor clarity / structure","Long, repetitive, focuses on what was done instead of what was found.","寫太多、講太雜,讀的人比你還累。"],
-  ["Out of scope","Perfectly fine paper, wrong journal. Desk-rejected before review.","投錯門,連被讀完的機會都沒有。"],
-  ["Ignoring reviewer comments","Even after revision, papers die by not addressing the feedback.","改了,但沒改到他要的那一點。"]
-];
 
 let count = 0, current = 0;
-const SITE = location.href.split('#')[0];
+const SITE = location.href.split('#')[0].split('?')[0];
 
 function pick(prev, n){ let i; do{ i=Math.floor(Math.random()*n);}while(i===prev && n>1); return i; }
 
 function updateShare(){
-  const q=quotes[current];
-  const text=`“${q[0]}” — ${q[1]}`;
+  const q=QUOTES[current];
+  const text=`“${q.en}” — ${q.zh}`;
   const u=encodeURIComponent(SITE), t=encodeURIComponent(text);
   document.getElementById('sh-x').href=`https://twitter.com/intent/tweet?text=${t}&url=${u}`;
   document.getElementById('sh-fb').href=`https://www.facebook.com/sharer/sharer.php?u=${u}`;
@@ -209,9 +194,9 @@ function reject(){
   const box=document.getElementById('quote');
   box.style.opacity=0;
   setTimeout(()=>{
-    current=pick(current,quotes.length);
-    const q=quotes[current];
-    box.innerHTML=`“${q[0]}”<span class="zh">${q[1]}</span>`;
+    current=pick(current,QUOTES.length);
+    const q=QUOTES[current];
+    box.innerHTML=`“${q.en}”<span class="zh">${q.zh}</span>`;
     document.getElementById('sign').textContent=signs[Math.floor(Math.random()*signs.length)];
     document.getElementById('msid').textContent=String(Math.floor(1000+Math.random()*9000));
     box.style.opacity=1;
@@ -226,15 +211,15 @@ function flash(msg){
   c.textContent=msg; setTimeout(()=>c.textContent=t,1500);
 }
 function copyQuote(){
-  const q=quotes[current];
-  navigator.clipboard.writeText(`“${q[0]}”\n${q[1]}`).then(()=>flash("已複製這句心碎到剪貼簿 🖤")).catch(()=>{});
+  const q=QUOTES[current];
+  navigator.clipboard.writeText(`“${q.en}”\n${q.zh}`).then(()=>flash("已複製這句心碎到剪貼簿 🖤")).catch(()=>{});
 }
-function copyLink(btn){
+function copyLink(){
   navigator.clipboard.writeText(SITE).then(()=>flash("已複製網站連結 🔗")).catch(()=>{});
 }
 function nativeShare(){
-  const q=quotes[current];
-  navigator.share({title:"We Regret to Inform You…",text:`“${q[0]}” — ${q[1]}`,url:SITE}).catch(()=>{});
+  const q=QUOTES[current];
+  navigator.share({title:"We Regret to Inform You…",text:`“${q.en}” — ${q.zh}`,url:SITE}).catch(()=>{});
 }
 
 /* theme */
@@ -254,10 +239,10 @@ function toggleTheme(){
   applyTheme(saved);
 })();
 
-document.getElementById('reasons').innerHTML=reasons.map((r,i)=>
+document.getElementById('reasons').innerHTML=REASONS.map((r,i)=>
   `<div class="reason"><div class="rank">REASON #${i+1}</div>
-   <div class="en">${r[0]} — ${r[1]}</div>
-   <div class="zh">${r[2]}</div></div>`).join('');
+   <div class="en">${r.title} — ${r.en}</div>
+   <div class="zh">${r.zh}</div></div>`).join('');
 
 if(navigator.share) document.getElementById('native-share').style.display='inline-flex';
 reject();
