@@ -35,7 +35,7 @@ Got a heartbreaking (or hilarious) rejection line of your own? Add it. All the c
 | `quotes.js` | Rejection lines |
 | `reasons.js` | Common rejection reasons |
 
-The flow is simple: **fork → edit `quotes.js` → open a pull request**. See [CONTRIBUTING.md](CONTRIBUTING.md) for the full guide.
+The flow is simple: **fork → edit `quotes.js` → open a pull request**. See [CONTRIBUTING.en.md](CONTRIBUTING.en.md) for the full guide.
 
 > Every contribution goes through a pull request — nobody pushes to `main` directly, so each line gets a second pair of eyes before it's merged.
 
